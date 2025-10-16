@@ -49,7 +49,6 @@ t_dict_entry* load_dictionary(const char *filename, int *size)
 	char buf[1024];
 	int total = read(fd, buf, 1023);
 	buf[total] = '\0';
-	// Compte le nombre de lignes
 	int lines = 0;
 	for (int i = 0; buf[i]; i++)
 		if (buf[i] == '\n') lines++;
@@ -64,8 +63,7 @@ t_dict_entry* load_dictionary(const char *filename, int *size)
 		if (parse_line(line, &number, &word))
 		{
 			dict[idx].number = number;
-			dict[idx].word = word;
-			idx++;
+			dict[idx++].word = word;
 		}
 		line = strtok(NULL, "\n");
 	}

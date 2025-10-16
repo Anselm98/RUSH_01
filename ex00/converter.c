@@ -1,7 +1,16 @@
+#ifndef RUSH_01_H
+# define RUSH_01_H
+
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <limits.h>
+
+typedef struct s_dict_entry
+{
+    int number;
+    char *word;
+} t_dict_entry;
 
 char *ipssi_rush01_number_to_words(int nbr)
 {
