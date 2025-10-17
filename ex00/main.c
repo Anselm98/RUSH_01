@@ -1,43 +1,56 @@
-#include <unistd.h>
-#include <stdlib.h>
 #include "rush-01.h"
 
-// Fonction atoi
-int ipssi_atoi(char *str);
-
-int main (void)
+int	ft_strlen(char *str)
 {
-	int size;
-	// Charger le dictionnaire
-	t_dict_entry *dict = load_dictionary("numbers.dict", &size);
-	if (!dict) return 1;
+	int len;
 
-	char *str = "42";
-	int num = ipssi_atoi(str);
-	const char *word = find_word(dict, size, num);
-	if (word)
-	{
-		write(1, word, ft_strlen((char*)word));
-		write(1, "\n", 1);
-	}
-	else
-	{
-		write(1, "Nombre inconnu\n", 16);
-	}
-	free_dictionary(dict, size);
-	return 0;
+	len = 0;
+	while (str[len])
+		len++;
+	return (len);
 }
 
+int	is_valid_number(char *str)
+{
+	int i;
 
-// Fonction pour charger le dictionnaire
-struct s_dict_entry;
-struct s_dict_entry* load_dictionary(char *filename);
+	i = 0;
+	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n')
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+		return (0);
+	if (str[i] == '\0')
+		return (0);
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
-//Fonction pour convertir le nombre en mots
-void .....()
+int	main(int argc, char **argv)
+{
+	int num;
 
-// Fonction pour libérer la mémoire du dictionnaire
-void...;
-
-// Fonction pour ecrire le nombre en mots
-void...;
+	if (argc != 2)
+	{
+		write(1, "error\n", 6);
+		return (1);
+	}
+	if (!is_valid_number(argv[1]))
+	{
+		write(1, "error\n", 6);
+		return (1);
+	}
+	num = ipssi_atoi(argv[1]);
+	if (num < 0)
+	{
+		write(1, "error\n", 6);
+		return (1);
+	}
+	number_to_words(num);
+	write(1, "\n", 1);
+	return (0);
+}

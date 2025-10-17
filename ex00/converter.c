@@ -1,93 +1,91 @@
-#ifndef RUSH_01_H
-# define RUSH_01_H
+#include "rush-01.h"
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <limits.h>
+char *g_units[] = {"", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
+char *g_teens[] = {"ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"};
+char *g_tens[] = {"", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"};
 
-typedef struct s_dict_entry
+void	write_str(char *str)
 {
-    int number;
-    char *word;
-} t_dict_entry;
+	write(1, str, ft_strlen(str));
+}
 
-char *ipssi_rush01_number_to_words(int nbr)
+void	convert_hundreds(int nbr, int *first)
 {
-
-	if (nbr == 0)
-		return "zero";
-
-	if (nbr < 0)
-	{
-		write (1, "error", 6);
-		return "\0";
-	}
-	if (nbr >= 1000000000)
-	{
-		ipssi_rush01_number_to_words(nbr / 1000000000);
-		write(1, " ", 1);
-		write(1, billion, 7);
-		if (nbr % 1000000000)
-			write(1, " ", 1);
-		nbr %= 1000000000;
-	}
-	if (nbr >= 1000000)
-	{
-		ipssi_rush01_number_to_words(nbr / 1000000);
-		write(1, " ", 1);
-		write(1, million, 7);
-		if (nbr % 1000000)
-			write(1, " ", 1);
-		nbr %= 1000000;
-	}
-	if (nbr >= 1000)
-	{
-		ipssi_rush01_number_to_words(nbr / 1000);
-		write(1, " ", 1);
-		write(1, mille, 8);
-		if (nbr % 1000)
-			write(1, " ", 1);
-		nbr %= 1000;
-	}
 	if (nbr >= 100)
 	{
-		ipssi_rush01_number_to_words(nbr / 100);
-		write(1, " ", 1);
-		write(1, centaine, 7);
-		if (nbr % 100)
+		if (*first)
 			write(1, " ", 1);
+		write_str(g_units[nbr / 100]);
+		write_str(" hundred");
+		*first = 1;
 		nbr %= 100;
 	}
 	if (nbr >= 20)
 	{
-		write(1, dizaine[nbr / 10], strlen(dizaine[nbr / 10]));
-		if (nbr % 10)
+		if (*first)
 			write(1, " ", 1);
+		write_str(g_tens[nbr / 10]);
+		*first = 1;
 		nbr %= 10;
 	}
 	else if (nbr >= 10)
 	{
-		write(1, dizaine_speciale[nbr - 10], strlen(dizaine_speciale[nbr - 10]));
-		nbr = 0;
+		if (*first)
+			write(1, " ", 1);
+		write_str(g_teens[nbr - 10]);
+		*first = 1;
+		return ;
 	}
 	if (nbr > 0)
 	{
-		write(1, unite[nbr], strlen(unite[nbr]));
+		if (*first)
+			write(1, " ", 1);
+		write_str(g_units[nbr]);
+		*first = 1;
 	}
-	return "\0";
 }
 
-size_t strlen(const char *str)
+void	number_to_words_recursive(int nbr, int *first)
 {
-	size_t len = 0;
-	while (str[len])
-		len++;
-	return len;
+	if (nbr >= 1000000000)
+	{
+		number_to_words_recursive(nbr / 1000000000, first);
+		write_str(" billion");
+		*first = 1;
+		if (nbr % 1000000000)
+			number_to_words_recursive(nbr % 1000000000, first);
+		return ;
+	}
+	if (nbr >= 1000000)
+	{
+		number_to_words_recursive(nbr / 1000000, first);
+		write_str(" million");
+		*first = 1;
+		if (nbr % 1000000)
+			number_to_words_recursive(nbr % 1000000, first);
+		return ;
+	}
+	if (nbr >= 1000)
+	{
+		number_to_words_recursive(nbr / 1000, first);
+		write_str(" thousand");
+		*first = 1;
+		if (nbr % 1000)
+			number_to_words_recursive(nbr % 1000, first);
+		return ;
+	}
+	convert_hundreds(nbr, first);
 }
 
-void write_number_in_words(int nbr)
+void	number_to_words(int nbr)
 {
-	ipssi_rush01_number_to_words(nbr);
-	write(1, "\n", 1);
+	int first;
+
+	first = 0;
+	if (nbr == 0)
+	{
+		write_str("zero");
+		return ;
+	}
+	number_to_words_recursive(nbr, &first);
 }
