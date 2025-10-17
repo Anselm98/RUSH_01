@@ -13,20 +13,25 @@ int	ft_strlen(char *str)
 int	is_valid_number(char *str)
 {
 	int	i;
+	int	has_digit;
 
 	i = 0;
+	has_digit = 0;
 	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n')
 		i++;
 	if (str[i] == '-' || str[i] == '+')
 		return (0);
-	if (str[i] == '\0')
-		return (0);
-	while (str[i])
+	while (str[i] >= '0' && str[i] <= '9')
 	{
-		if (str[i] < '0' || str[i] > '9')
-			return (0);
+		has_digit = 1;
 		i++;
 	}
+	if (!has_digit)
+		return (0);
+	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n')
+		i++;
+	if (str[i] != '\0')
+		return (0);
 	return (1);
 }
 
