@@ -1,4 +1,4 @@
-char* ipssi_dictionary(int nbr)
+char* ipssi_dictionary(int nbr) 
 {
 
 	if nbr == 0
