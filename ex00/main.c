@@ -1,8 +1,8 @@
-#include "rush-01.h"
+#include "rush01.h"
 
 int	ft_strlen(char *str)
 {
-	int len;
+	int	len;
 
 	len = 0;
 	while (str[len])
@@ -12,7 +12,7 @@ int	ft_strlen(char *str)
 
 int	is_valid_number(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n')
@@ -32,7 +32,7 @@ int	is_valid_number(char *str)
 
 int	main(int argc, char **argv)
 {
-	int num;
+	int	num;
 
 	if (argc != 2)
 	{

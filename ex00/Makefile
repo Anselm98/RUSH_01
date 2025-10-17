@@ -1,6 +1,6 @@
 NAME = rush-01
 
-SRCS = main.c ipssi_atoi.c converter.c
+SRCS = main.c ipssi_atoi.c converter.c utils.c
 
 OBJS = $(SRCS:.c=.o)
 
