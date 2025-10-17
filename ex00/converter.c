@@ -7,60 +7,47 @@ char	*g_teens[] = {"ten", "eleven", "twelve", "thirteen",
 char	*g_tens[] = {"", "", "twenty", "thirty", "forty",
 	"fifty", "sixty", "seventy", "eighty", "ninety"};
 
-void	number_to_words_recursive(int nbr, int *first);
-
-void	convert_hundreds(int nbr, int *first)
+void	convert_hundreds(int nbr, char *result, int *first)
 {
 	if (nbr >= 100)
 	{
 		if (*first)
-			write(1, " ", 1);
-		write_str(g_units[nbr / 100]);
-		write_str(" hundred");
+			ft_strcat(result, " ");
+		ft_strcat(result, g_units[nbr / 100]);
+		ft_strcat(result, " hundred");
 		*first = 1;
 		nbr %= 100;
 	}
-	handle_tens_units(nbr, first);
+	handle_tens_units(nbr, result, first);
 }
 
-void	handle_large_numbers(int nbr, int *first, int divisor, char *word)
-{
-	number_to_words_recursive(nbr / divisor, first);
-	write_str(word);
-	*first = 1;
-	if (nbr % divisor)
-		number_to_words_recursive(nbr % divisor, first);
-}
-
-void	number_to_words_recursive(int nbr, int *first)
+void	convert_recursive(int nbr, char *result, int *first)
 {
 	if (nbr >= 1000000000)
-	{
-		handle_large_numbers(nbr, first, 1000000000, " billion");
-		return ;
-	}
-	if (nbr >= 1000000)
-	{
-		handle_large_numbers(nbr, first, 1000000, " million");
-		return ;
-	}
-	if (nbr >= 1000)
-	{
-		handle_large_numbers(nbr, first, 1000, " thousand");
-		return ;
-	}
-	convert_hundreds(nbr, first);
+		convert_billions(nbr, result, first);
+	else if (nbr >= 1000000)
+		convert_millions(nbr, result, first);
+	else if (nbr >= 1000)
+		convert_thousands(nbr, result, first);
+	else
+		convert_hundreds(nbr, result, first);
 }
 
-void	number_to_words(int nbr)
+char	*number_to_words(int nbr)
 {
-	int	first;
+	char	*result;
+	int		first;
 
+	result = malloc(1000 * sizeof(char));
+	if (!result)
+		return (NULL);
+	result[0] = '\0';
 	first = 0;
 	if (nbr == 0)
 	{
-		write_str("zero");
-		return ;
+		ft_strcat(result, "zero");
+		return (result);
 	}
-	number_to_words_recursive(nbr, &first);
+	convert_recursive(nbr, result, &first);
+	return (result);
 }

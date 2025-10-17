@@ -6,9 +6,12 @@
 
 int		ipssi_atoi(char *str);
 int		is_valid_number(char *str);
-void	number_to_words(int nbr);
+char	*number_to_words(int nbr);
 int		ft_strlen(char *str);
-void	write_str(char *str);
-void	handle_tens_units(int nbr, int *first);
+void	ft_strcat(char *dest, char *src);
+void	handle_tens_units(int nbr, char *result, int *first);
+void	convert_billions(int nbr, char *result, int *first);
+void	convert_millions(int nbr, char *result, int *first);
+void	convert_thousands(int nbr, char *result, int *first);
 
 #endif

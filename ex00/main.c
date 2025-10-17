@@ -30,9 +30,22 @@ int	is_valid_number(char *str)
 	return (1);
 }
 
+int	process_number(int num)
+{
+	char	*result;
+
+	result = number_to_words(num);
+	if (!result)
+		return (1);
+	write(1, result, ft_strlen(result));
+	write(1, "\n", 1);
+	free(result);
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
-	int	num;
+	int		num;
 
 	if (argc != 2)
 	{
@@ -50,7 +63,5 @@ int	main(int argc, char **argv)
 		write(1, "error\n", 6);
 		return (1);
 	}
-	number_to_words(num);
-	write(1, "\n", 1);
-	return (0);
+	return (process_number(num));
 }
